@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0B5D4B">
+<title>Norata – Suivi pharmacies Dakar</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;700&family=Figtree:wght@400;500;600&display=swap">
+<style>
+:root{--bg:#F2F5F3;--card:#fff;--ink:#14221E;--mute:#5B6B65;--line:#DCE4E0;--brand:#0B5D4B;--bi:#fff;--acc:#E8A317;--field:#F7F9F8;
+--s0:#5F6E68;--s1:#C2410C;--s2:#A16207;--s3:#2563EB;--s4:#7C3AED;--s5:#0B8F5B;--s6:#B91C1C;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0E1513;--card:#17211E;--ink:#E7EFEB;--mute:#93A59E;--line:#26332F;--brand:#3DBB98;--bi:#06201A;--field:#111A17;
+--s0:#9AABA4;--s1:#FB923C;--s2:#FACC15;--s3:#7AA7FF;--s4:#B79BFF;--s5:#4ADE9B;--s6:#FF8A8A}}
+:root[data-theme="dark"]{--bg:#0E1513;--card:#17211E;--ink:#E7EFEB;--mute:#93A59E;--line:#26332F;--brand:#3DBB98;--bi:#06201A;--field:#111A17;
+--s0:#9AABA4;--s1:#FB923C;--s2:#FACC15;--s3:#7AA7FF;--s4:#B79BFF;--s5:#4ADE9B;--s6:#FF8A8A}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.4 Figtree,system-ui,-apple-system,"Segoe UI",sans-serif;-webkit-text-size-adjust:100%}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--brand);z-index:10}
+h1,h2,h3{font-family:"Bricolage Grotesque",Figtree,system-ui,sans-serif;margin:0}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:9;background:var(--brand);color:var(--bi);padding:12px 16px 10px}
+header h1{font-size:20px;line-height:1.1}
+header p{margin:2px 0 0;font-size:13px;opacity:.85}
+.tools{display:grid;gap:8px;margin-top:10px}
+input,select,textarea{width:100%;font:inherit;color:var(--ink);background:var(--field);border:1px solid var(--line);border-radius:10px;padding:10px 12px;min-height:44px}
+header input,header select{border-color:transparent}
+textarea{min-height:80px;resize:vertical}
+.chips{display:flex;gap:6px;overflow-x:auto;padding:2px 0 4px;scrollbar-width:none}
+.chip{flex:none;border:1px solid color-mix(in srgb,var(--bi) 40%,transparent);background:transparent;color:var(--bi);border-radius:99px;padding:6px 12px;font:500 13px Figtree,sans-serif;min-height:34px}
+.chip[aria-pressed="true"]{background:var(--bi);color:var(--brand);border-color:var(--bi)}
+main{padding:12px 12px 96px;max-width:640px;margin:0 auto}
+.view[hidden]{display:none}
+.count{font-size:13px;color:var(--mute);margin:2px 4px 8px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin-bottom:10px;border-left:5px solid var(--sc,var(--s0))}
+.top{display:flex;justify-content:space-between;gap:8px;align-items:flex-start}
+.card h3{font-size:16px;line-height:1.25}
+.badge{flex:none;font:600 12px Figtree,sans-serif;padding:3px 9px;border-radius:99px;color:var(--sc);background:color-mix(in srgb,var(--sc) 15%,transparent);white-space:nowrap}
+.meta{margin:4px 0 0;font-size:13px;color:var(--mute)}
+.h24{color:var(--s5);font-weight:600}
+.cmd{margin:6px 0 0;font-size:14px;font-weight:600}
+.act{display:flex;gap:8px;margin-top:10px}
+.btn{flex:1;text-align:center;text-decoration:none;font:600 14px Figtree,sans-serif;padding:10px 6px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--ink);min-height:44px;display:flex;align-items:center;justify-content:center}
+.btn.p{background:var(--brand);color:var(--bi);border-color:var(--brand)}
+.fab{position:fixed;right:16px;bottom:calc(76px + env(safe-area-inset-bottom,0px));z-index:8;width:56px;height:56px;border-radius:50%;border:0;background:var(--acc);color:#1b1400;font:600 30px/1 Figtree,sans-serif;box-shadow:0 4px 14px rgba(0,0,0,.28)}
+nav{position:fixed;left:0;right:0;bottom:0;z-index:9;display:flex;background:var(--card);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px)}
+nav button{flex:1;border:0;background:none;color:var(--mute);font:500 12px Figtree,sans-serif;padding:8px 0 10px;min-height:56px;display:grid;justify-items:center;gap:2px}
+nav button svg{width:24px;height:24px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+nav button[aria-current="page"]{color:var(--brand);font-weight:600}
+.kpis{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.kpi{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px}
+.kpi b{display:block;font:700 24px "Bricolage Grotesque",Figtree,sans-serif}
+.kpi span{font-size:13px;color:var(--mute)}
+.kpi.w{grid-column:1/-1;background:var(--brand);color:var(--bi);border-color:var(--brand)}
+.kpi.w span{color:inherit;opacity:.85}
+.kpi.w b{font-size:30px}
+h2{font-size:17px;margin:18px 4px 8px}
+.bar{display:grid;grid-template-columns:120px 1fr 28px;gap:8px;align-items:center;font-size:14px;margin:6px 4px}
+.bar i{display:block;height:10px;border-radius:5px;background:var(--sc);min-width:2px}
+.bar div{background:var(--line);border-radius:5px;overflow:hidden}
+.bar em{font-style:normal;text-align:right;font-weight:600}
+.tw{overflow-x:auto;background:var(--card);border:1px solid var(--line);border-radius:14px}
+table{border-collapse:collapse;width:100%;font-size:13px;min-width:460px}
+th,td{padding:9px 10px;text-align:right;border-bottom:1px solid var(--line)}
+th:first-child,td:first-child{text-align:left}
+th{color:var(--mute);font-weight:600}
+tr:last-child td{border-bottom:0}
+details{background:var(--card);border:1px solid var(--line);border-radius:14px;margin-bottom:8px}
+summary{padding:13px 14px;font-weight:600;min-height:44px;cursor:pointer}
+details p{margin:0;padding:0 14px 14px;line-height:1.55}
+mark{background:#FDE68A;color:#3b2a00;border-radius:4px;padding:0 3px}
+details ul,details ol{margin:0;padding:0 14px 14px 34px;line-height:1.6}
+details li{margin-bottom:6px}
+.gh{margin:4px 4px 10px;color:var(--mute);font-size:14px}
+.note{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin-bottom:10px;font-size:14px;line-height:1.55}
+.note b{font-family:"Bricolage Grotesque",Figtree,sans-serif}
+#ov{position:fixed;inset:0;z-index:20;background:rgba(0,0,0,.5);display:none}
+#ov.on{display:block}
+#sh{position:absolute;left:0;right:0;bottom:0;max-height:92%;overflow-y:auto;background:var(--bg);border-radius:20px 20px 0 0;padding:16px 16px calc(20px + env(safe-area-inset-bottom,0px));max-width:640px;margin:0 auto}
+#sh h2{margin:0 0 2px;font-size:19px}
+.fl{display:block;font-size:13px;font-weight:600;color:var(--mute);margin:12px 0 4px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.tot{margin-top:14px;padding:12px 14px;border-radius:12px;background:var(--brand);color:var(--bi);display:flex;justify-content:space-between;font-weight:600}
+.x{float:right;border:0;background:var(--card);border:1px solid var(--line);color:var(--ink);width:44px;height:44px;border-radius:50%;font-size:20px}
+.del{margin-top:14px;width:100%;color:var(--s6)}
+.cp{width:100%;margin-top:12px}
+@media (prefers-reduced-motion:no-preference){#sh{animation:up .22s ease-out}@keyframes up{from{transform:translateY(40px);opacity:.5}}}
+:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+</style>
+</head>
+<body>
+<header>
+  <h1>Suivi pharmacies · Dakar</h1>
+  <p id="sub">Norata</p>
+  <div class="tools" id="tools">
+    <input id="q" type="search" placeholder="Rechercher une pharmacie, un numéro…" aria-label="Rechercher">
+    <select id="zf" aria-label="Zone"></select>
+    <div class="chips" id="chips"></div>
+  </div>
+</header>
+<main>
+  <section class="view" id="v-list"><p class="count" id="cnt"></p><div id="list"></div></section>
+  <section class="view" id="v-sum" hidden></section>
+  <section class="view" id="v-script" hidden></section>
+  <section class="view" id="v-help" hidden></section>
+</main>
+<button class="fab" id="add" aria-label="Ajouter une pharmacie">+</button>
+<nav>
+  <button data-v="list" aria-current="page"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg>Pharmacies</button>
+  <button data-v="sum"><svg viewBox="0 0 24 24"><path d="M5 20V10M12 20V4M19 20v-7"/></svg>Résumé</button>
+  <button data-v="script"><svg viewBox="0 0 24 24"><path d="M5 4h14v12H9l-4 4z"/></svg>Script</button>
+  <button data-v="help"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/></svg>Guide</button>
+</nav>
+<div id="ov"><div id="sh" role="dialog" aria-modal="true"></div></div>
+<script>
+const D=[[1,0,"Pharmacie Vital","+221 33 821 08 89","Lun-Sam 8h-20h30, Dim 9h-20h30",14.6673338,-17.4314476],[2,0,"Pharmacie Gorom","+221 33 842 54 64","Lun-Sam 8h-21h30, Dim fermé",14.668267,-17.4392071],[3,0,"Pharmacie Wagane Diouf","+221 33 842 92 32","Lun-Ven 7h-22h, Sam 7h-20h, Dim 9h-18h",14.6719178,-17.4341329],[4,0,"Grande Pharmacie Dakaroise","+221 33 821 10 64","Lun-Ven 8h-20h, Sam 9h-19h30, Dim fermé",14.6717832,-17.4318063],[5,0,"Pharmacie Pasteur","+221 33 821 70 35","24h/24",14.6589593,-17.435788],[6,0,"Pharmacie Médina","+221 33 823 94 01","Lun-Ven 8h-21h, Sam 8h-20h, Dim fermé",14.6830255,-17.4517276],[7,0,"Pharmacie Anne et Juliette Poste Médina","+221 33 822 57 56","Lun-Sam 8h-minuit, Dim 9h-20h",14.6777207,-17.4464371],[8,0,"Pharmacie Royale","+221 77 678 74 74","24h/24",14.6796191,-17.4490355],[9,0,"Para & Pharmacie Fatim Zahra","+221 33 822 90 70","7j/7 9h-22h",14.684498,-17.4487939],[10,0,"Pharmacie Mame Fatou Diop Yoro","+221 33 842 45 82","Lun-Sam 8h30-23h, Dim fermé",14.6781627,-17.4497907],[11,0,"Pharmacie Colobane","+221 33 823 51 28","Lun-Sam 8h30-23h30, Dim 9h-20h30",14.6917234,-17.447072],[12,0,"Pharmacie Penda Sarr","+221 33 842 27 27","Non renseigné",14.6817837,-17.4598922],[13,1,"Pharmacie du Point E","+221 33 824 56 04","Lun-Sam 8h-20h30, Dim fermé",14.6950057,-17.4580234],[14,1,"Pharmacie Résidence","+221 33 825 54 53","7j/7 7h30-23h",14.699054,-17.4644049],[15,1,"Pharmacie Fann Hock","+221 33 822 07 89","Lun-Sam 8h-23h, Dim fermé",14.6797724,-17.4616445],[16,1,"Pharmacie Aimé Césaire","+221 33 825 44 23","24h/24",14.6955193,-17.4667762],[17,1,"Pharmacie Ndoss","+221 33 825 56 62","24h/24",14.6923886,-17.4608213],[18,2,"New Baobab Pharmacy","+221 33 825 44 57","Lun-Sam 8h-22h, Dim fermé",14.705148,-17.4624249],[19,2,"Pharmacie DAYA","+221 33 864 14 12","Lun-Sam 8h-22h, Dim fermé",14.709944,-17.4627166],[20,2,"Pharmacie Mermoz","+221 33 825 05 09","Lun-Sam 9h-22h30, Dim 10h-22h30",14.7035712,-17.4715383],[21,2,"Pharmacie Mame Oumy Gueye","+221 33 825 59 99","Lun-Sam 8h30-23h, Dim 9h-22h",14.7172017,-17.4670997],[22,2,"Pharmacie Abou Houreyra","+221 78 689 15 60","Lun-Sam 6h30-1h, Dim 7h-1h",14.710957,-17.4792927],[23,2,"Pharmacie Stella","+221 33 860 32 32","Lun-Sam 8h30-20h45, Dim fermé",14.7038391,-17.4749944],[24,2,"Pharmacie Demba Koïta","+221 33 825 79 79","24h/24",14.7107923,-17.4700749],[25,3,"Pharmacie Hann Maristes","+221 33 832 18 44","Annoncée 24h/24 (à vérifier)",14.7246136,-17.4390695],[26,3,"Pharmacie Abdourahmane","+221 33 832 46 00","7j/7 7h-23h",14.7378041,-17.4244138],[27,3,"Pharmacie Plusss...","+221 33 832 01 12","Lun-Sam 8h-minuit, Dim 16h-23h30",14.7313066,-17.4319459],[28,3,"Pharmacie Radja","+221 33 832 43 05","7j/7 8h-23h",14.7340789,-17.4269302],[29,3,"Pharmacie Touba","+221 33 832 59 51","7j/7 8h-23h",14.7369827,-17.4340636],[30,4,"Pharmacie Ouakam","+221 33 820 15 00","7j/7 8h-20h30",14.717777,-17.4871764],[31,4,"Pharmacie La Clémence","+221 33 825 09 02","7j/7 8h-minuit",14.7135176,-17.4459424],[32,4,"Pharmacie Léopold Sédar Senghor","+221 33 824 07 20","7j/7 8h-23h",14.7064517,-17.4450474],[33,4,"Pharmacie Grand Dakar","+221 33 825 00 85","Non renseigné",14.7053394,-17.4517526],[34,4,"Pharmacie Bourguiba","+221 33 824 59 92","Lun-Sam 8h30-23h, Dim 9h-23h",14.7181006,-17.450747],[35,5,"Pharmacie Almadies x Ngor","+221 33 820 07 01","7j/7 8h-2h",14.7463352,-17.5128969],[36,5,"Pharmacie Arc-en-ciel","+221 77 719 41 36","Lun-Ven 8h-19h30, Sam 8h-18h30, Dim fermé",14.7388578,-17.5097781],[37,5,"Pharmacie Ngor Oasis","+221 33 820 39 00","Lun-Sam 7h-minuit, Dim 9h-23h",14.7488173,-17.5070432],[38,5,"Pharmacie du Virage","+221 33 820 69 11","7j/7 8h-22h",14.7543468,-17.4954039],[39,5,"Pharmacie Mame Ndiaré","+221 78 488 88 11","24h/24",14.7570721,-17.4776682],[40,5,"Pharmacie Al Mahdi","+221 33 820 94 30","7j/7 8h-minuit",14.7583668,-17.4683756],[41,5,"Pharmacie Rond-Point Yoff","+221 33 860 24 60","24h/24",14.7547387,-17.4756519],[42,5,"Pharmacie Xandar","+221 33 820 28 01","Lun-Sam 8h-23h, Dim fermé",14.7512213,-17.4725259],[43,6,"Pharmacie Liberté","+221 33 824 08 21","7j/7 8h-23h",14.7134512,-17.4561822],[44,6,"Pharmacie El Hadj Malick Coura","+221 33 822 61 05","Non renseigné",14.7131611,-17.4590087],[45,6,"Pharmacie Terminus Liberté 5","+221 33 824 07 74","7j/7 8h-23h",14.7223214,-17.4583586],[46,6,"Pharmacie Camp Leclerc","+221 33 867 26 26","7j/7 9h-22h",14.729415,-17.4623022],[47,6,"Pharmacie Shelter","+221 33 827 43 29","Lun-Sam 8h-23h, Dim fermé",14.7406958,-17.4591251],[48,6,"Pharmacie Fatou Ideu Sy","+221 33 827 87 20","7j/7 7h-23h",14.7434292,-17.4589398],[49,7,"Pharmacie Yacine","+221 33 835 78 58","24h/24",14.757129,-17.4392788],[50,7,"Pharmacie Ceerno Yaal","+221 33 835 78 50","Lun-Sam 8h30-23h, Dim fermé",14.754765,-17.4535387],[51,7,"Pharmacie Cheikh Issa Aw","+221 33 835 09 52","7j/7 8h-23h",14.7588125,-17.4479375],[52,7,"Pharmacie Mariama","+221 33 855 07 40","Lun-Sam 8h-23h, Dim fermé",14.7636808,-17.4431884],[53,7,"Pharmacie Stade","+221 33 835 41 11","7j/7 8h-23h",14.7505908,-17.4503252],[54,8,"Pharmacie Guédiawaye","+221 33 837 06 27","Lun-Sam 9h-21h, Dim fermé",14.7696634,-17.3886627],[55,8,"Pharmacie Maimouna Abdoulaye Sy","+221 33 837 61 31","Lun-Sam 8h-23h30, Dim fermé",14.7692832,-17.4105176],[56,8,"Pharmacie Mossane","+221 77 365 16 19","7j/7 8h-23h",14.7840236,-17.379452],[57,8,"Pharmacie Serigne Dame Thiane","+221 33 834 72 86","Lun-Sam 8h-23h, Dim 9h-23h",14.7526238,-17.4036086],[58,8,"Pharmacie Serigne Mbacké Madina","+221 33 834 95 99","7j/7 8h-23h",14.760015,-17.3954844],[59,8,"Pharmacie Medina Thiaroye IV","+221 33 834 17 89","Lun-Sam 8h-23h, Dim 8h30-22h45",14.7652555,-17.3793778],[60,8,"Pharmacie Camp Thiaroye","+221 33 854 31 20","7j/7 8h-23h",14.7536311,-17.3792865],[61,8,"Pharmacie Serigne Saliou","+221 33 834 91 37","Lun-Sam 8h-23h, Dim fermé",14.7474442,-17.3669014],[62,9,"Pharmacie Maya Mame Ansou Niang","+221 33 878 92 98","24h/24",14.7816537,-17.3038124],[63,9,"Pharmacie Birane Ly","+221 78 808 78 78","Lun-Sam 8h30-22h30, Dim fermé",14.7695331,-17.3138598],[64,9,"Pharmacie Elimane Aly Dramane","800 00 20 20 (numéro à vérifier)","Lun-Sam 8h-22h30, Dim fermé",14.777871,-17.3143543],[65,9,"Pharmacie Mame Cheikh Anta Mbacké","+221 78 300 51 51","7j/7 8h-23h",14.786368,-17.311941],[66,9,"Pharmacie Ainoumadi","+221 33 878 51 08","Lun-Sam 8h-23h, Dim 9h-22h",14.7730697,-17.3096457],[67,10,"Pharmacie Marie Sarr","+221 33 870 01 30","Lun-Sam 8h-22h, Dim fermé",14.7315277,-17.2864705],[68,10,"Pharmacie Moderne","+221 33 836 22 98","Lun-Sam 8h-22h, Dim fermé",14.7152178,-17.2757741],[69,10,"Pharmacie Serigne Fallou Mbacké","+221 33 836 23 02","Lun-Sam 8h-22h, Dim fermé",14.7192152,-17.273109],[70,10,"Pharmacie du Boulevard","+221 33 836 30 57","Lun-Ven 8h-22h, Sam-Dim fermé",14.7138864,-17.2731982],[71,10,"Pharmacie de Bargny","+221 33 836 77 30","Non renseigné",14.6954116,-17.2304227],[72,10,"Pharmacie Khaly Djibril Diagne (Diamniadio)","+221 33 836 68 01","Lun-Sam 7h30-22h30, Dim 8h-22h",14.7269121,-17.1643302]],Z=["Plateau / Médina / Colobane","Fann / Point E / Amitié","Sicap / Baobab / Mermoz","Hann / Mariste","Ouakam / Grand Dakar","Almadies / Ngor / Yoff","Liberté / Patte d'Oie","Parcelles Assainies","Guédiawaye / Pikine / Thiaroye","Keur Massar","Rufisque / Bargny / Diamniadio"],SCR=[["1. Accroche (10 s)","« Bonjour, je suis Norata Gomis, déléguée pour [NOM DU PRODUIT / DU LABORATOIRE ou de la marque]. Je souhaiterais parler au pharmacien titulaire ou à la personne qui s'occupe des achats, s'il vous plaît. »"],["2. Si on vous le passe","« Bonjour Docteur, merci de me prendre au téléphone. Auriez-vous 2 minutes ? Je ne vais pas vous retenir. »"],["3. Présentation du produit (30 s)","« Je vous appelle pour vous présenter [NOM DU PRODUIT], [une phrase : à quoi ça sert / pour quel besoin]. Il est [déjà utilisé / enregistré (n° AMM ou autorisation)], et il intéresse particulièrement [type de clientèle : mamans, diabétiques, sportifs…]. »"],["4. L'avantage pour la pharmacie (15 s)","« Pour votre officine, c'est [marge intéressante / produit de rotation rapide / peu de concurrence / conditions de livraison…]. »"],["5. Proposition de visite","« Si cela vous intéresse, je peux passer vous voir avec le produit pour vous le présenter en 10 minutes. Quel jour et à quelle heure vous arrangent le mieux cette semaine ? »"],["6a. Si OUI","« Parfait, je note [jour / heure]. Je passerai avec le produit et la documentation. Merci Docteur, à bientôt ! » → noter la date dans la fiche."],["6b. Si « rappelez-moi plus tard »","« Bien sûr, quel jour puis-je vous rappeler ? » → noter la date dans « Prochaine relance »."],["6c. Si NON","« Je comprends, merci de votre temps Docteur. Puis-je vous laisser mes coordonnées au cas où ? » → rester courtoise et noter la raison."],["Lors de la visite : présentation","Montrer le produit, expliquer l'utilité et la composition, laisser un échantillon / une fiche produit, répondre aux questions."],["Lors de la visite : prise de commande","« Combien d'unités souhaitez-vous commander pour commencer ? » → noter la quantité, le prix convenu et le délai de livraison, puis confirmer par écrit (bon de commande)."],["Si le standard filtre l'appel","« Je vous appelle de la part de [NOM DU PRODUIT] pour une présentation de produit. À quel moment le pharmacien est-il le plus disponible pour que je le rappelle ? »"]];
+const ST=["À appeler","Pas de réponse","À rappeler","Intéressé","Rendez-vous pris","Commande passée","Refus"];
+let S={rec:{},custom:[]};
+try{S=Object.assign(S,JSON.parse(localStorage.getItem("norata_v1")||"{}"))}catch(e){}
+const save=()=>{try{localStorage.setItem("norata_v1",JSON.stringify(S))}catch(e){}};
+const $=id=>document.getElementById(id);
+const esc=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const all=()=>D.concat(S.custom);
+const R=id=>S.rec[id]||{s:0};
+const amt=r=>(+r.q||0)*(+r.pu||0);
+const fmt=n=>Math.round(n).toLocaleString("fr-FR");
+const tel=t=>String(t).replace(/[^+\d]/g,"");
+const mapsUrl=p=>p[5]!=null?"https://www.google.com/maps?q="+p[5]+","+p[6]:"https://www.google.com/maps/search/"+encodeURIComponent(p[2]+" Dakar");
+const F={q:"",s:-1,z:-1};
+let cur=null,view="list";
+
+$("zf").innerHTML='<option value="-1">Toutes les zones</option>'+Z.map((z,i)=>`<option value="${i}">${esc(z)}</option>`).join("");
+function drawChips(){
+  $("chips").innerHTML=[["Tous",-1]].concat(ST.map((s,i)=>[s,i])).map(([l,i])=>`<button class="chip" data-s="${i}" aria-pressed="${F.s===i}">${l}</button>`).join("");
+}
+function drawList(){
+  const q=F.q.toLowerCase().trim();
+  const L=all().filter(p=>(F.z<0||p[1]===F.z)&&(F.s<0||(R(p[0]).s||0)===F.s)&&(!q||(p[2]+" "+p[3]+" "+Z[p[1]]).toLowerCase().includes(q)));
+  $("cnt").textContent=L.length+" pharmacie"+(L.length>1?"s":"")+" sur "+all().length;
+  $("list").innerHTML=L.map(p=>{const r=R(p[0]),s=r.s||0,a=amt(r);
+    return `<article class="card" data-id="${p[0]}" style="--sc:var(--s${s})">
+    <div class="top"><h3>${esc(p[2])}</h3><span class="badge">${ST[s]}</span></div>
+    <p class="meta">${esc(Z[p[1]])}</p>
+    <p class="meta ${/24h\/24/.test(p[4]||"")?"h24":""}">${esc(p[4]||"Horaires non renseignés")}</p>
+    ${a?`<p class="cmd">Commande : ${fmt(a)} FCFA</p>`:""}
+    ${r.ct?`<p class="meta">Contact : ${esc(r.ct)}</p>`:""}
+    <div class="act">${p[3]?`<a class="btn p" href="tel:${tel(p[3])}">Appeler</a>`:""}<a class="btn" target="_blank" rel="noopener" href="${mapsUrl(p)}">Localiser</a><button class="btn" data-open="${p[0]}">Fiche</button></div>
+  </article>`}).join("")||'<p class="count">Aucun résultat.</p>';
+  $("sub").textContent="Norata · "+(all().length-all().filter(p=>(R(p[0]).s||0)===0).length)+" contactées sur "+all().length;
+}
+function drawSum(){
+  const A=all(),n=A.length,c=ST.map((_,i)=>A.filter(p=>(R(p[0]).s||0)===i).length);
+  const recs=A.map(p=>R(p[0])),qty=recs.reduce((a,r)=>a+(+r.q||0),0),tot=recs.reduce((a,r)=>a+amt(r),0);
+  const ct=n-c[0],pc=n?Math.round(ct/n*100):0,tc=ct?Math.round(c[5]/ct*100):0;
+  const zr=Z.map((z,i)=>{const P=A.filter(p=>p[1]===i);if(!P.length)return"";const rs=P.map(p=>R(p[0]));
+    return `<tr><td>${esc(z)}</td><td>${P.length}</td><td>${rs.filter(r=>r.s>0).length}</td><td>${rs.filter(r=>r.s===5).length}</td><td>${rs.reduce((a,r)=>a+(+r.q||0),0)}</td><td>${fmt(rs.reduce((a,r)=>a+amt(r),0))}</td></tr>`}).join("");
+  $("v-sum").innerHTML=`<div class="kpis">
+  <div class="kpi w"><span>Montant total des commandes</span><b>${fmt(tot)} FCFA</b></div>
+  <div class="kpi"><b>${n}</b><span>Pharmacies</span></div><div class="kpi"><b>${c[5]}</b><span>Commandes passées</span></div>
+  <div class="kpi"><b>${pc} %</b><span>Déjà contactées</span></div><div class="kpi"><b>${tc} %</b><span>Commandes / contactées</span></div>
+  <div class="kpi"><b>${qty}</b><span>Quantité commandée</span></div><div class="kpi"><b>${c[4]}</b><span>Rendez-vous pris</span></div></div>
+  <h2>Par statut</h2>${ST.map((s,i)=>`<div class="bar" style="--sc:var(--s${i})"><span>${s}</span><div><i style="width:${n?c[i]/n*100:0}%"></i></div><em>${c[i]}</em></div>`).join("")}
+  <h2>Par zone</h2><div class="tw"><table><tr><th>Zone</th><th>Pharm.</th><th>Contact.</th><th>Cmd</th><th>Qté</th><th>FCFA</th></tr>${zr}</table></div>
+  <button class="btn cp" id="cpy">Copier le récapitulatif</button>`;
+  $("cpy").onclick=async e=>{const t=`Suivi Norata – ${n} pharmacies\nContactées : ${ct} (${pc} %)\nRendez-vous : ${c[4]}\nCommandes : ${c[5]} (${tc} % des contactées)\nQuantité : ${qty}\nMontant : ${fmt(tot)} FCFA`;
+    try{await navigator.clipboard.writeText(t);e.target.textContent="Copié ✓"}catch(x){e.target.textContent="Copie impossible"}};
+}
+function drawScript(){
+  $("v-script").innerHTML='<p class="count">Remplacez les éléments <mark>[entre crochets]</mark> par vos informations.</p>'+SCR.map((r,i)=>`<details${i===0?" open":""}><summary>${esc(r[0])}</summary><p>${esc(r[1]).replace(/\[([^\]]+)\]/g,"<mark>[$1]</mark>")}</p></details>`).join("");
+}
+function drawHelp(){
+  $("v-help").innerHTML=`
+  <div class="note"><b>Sources et limites</b><br>Données Google Maps (numéros, horaires, positions) relevées le 02/10/2026 : confirmez à l’appel. La liste n’est pas exhaustive. Le numéro de la Pharmacie Elimane Aly Dramane (800 00 20 20) ressemble à un numéro vert : à vérifier.</div>
+  <div class="note"><b>Vos données</b><br>Elles sont enregistrées sur cet appareil, dans ce navigateur. Les effacer ou changer de téléphone fait repartir de zéro : pensez à copier régulièrement le récapitulatif.<br>Le bouton ci-dessous remet tout à zéro : statuts, dates, contacts, commandes, notes et pharmacies ajoutées.</div><button class="btn del" id="wipe">Effacer toutes les données</button>`;
+}
+function sheet(id){
+  const p=all().find(x=>x[0]===id);if(!p)return;cur=id;const r=R(id),cu=id>=1000;
+  $("sh").innerHTML=`<button class="x" id="cl" aria-label="Fermer">✕</button>
+  ${cu?`<label class="fl" style="margin-top:0">Nom de la pharmacie</label><input data-m="2" value="${esc(p[2])}" placeholder="Pharmacie…">
+  <label class="fl">Zone</label><select data-m="1">${Z.map((z,i)=>`<option value="${i}"${i===p[1]?" selected":""}>${esc(z)}</option>`).join("")}</select>
+  <label class="fl">Téléphone</label><input data-m="3" type="tel" value="${esc(p[3])}">`
+  :`<h2>${esc(p[2])}</h2><p class="meta">${esc(Z[p[1]])} · ${esc(p[3])}<br>${esc(p[4]||"")}</p>`}
+  <label class="fl">Statut</label><select data-f="s">${ST.map((s,i)=>`<option value="${i}"${i===(r.s||0)?" selected":""}>${s}</option>`).join("")}</select>
+  <div class="g2"><div><label class="fl">Date d’appel</label><input type="date" data-f="da" value="${esc(r.da)}"></div><div><label class="fl">Date de visite</label><input type="date" data-f="dv" value="${esc(r.dv)}"></div></div>
+  <label class="fl">Contact (pharmacien)</label><input data-f="ct" value="${esc(r.ct)}" placeholder="Dr …">
+  <div class="g2"><div><label class="fl">Quantité</label><input type="number" inputmode="numeric" min="0" data-f="q" value="${esc(r.q)}"></div><div><label class="fl">Prix unitaire (FCFA)</label><input type="number" inputmode="numeric" min="0" data-f="pu" value="${esc(r.pu)}"></div></div>
+  <div class="tot"><span>Commande</span><span id="tt">${fmt(amt(r))} FCFA</span></div>
+  <label class="fl">Notes</label><textarea data-f="n" placeholder="Raison d’un refus, date de rappel…">${esc(r.n)}</textarea>
+  <div class="act">${p[3]?`<a class="btn p" href="tel:${tel(p[3])}">Appeler</a>`:""}<a class="btn" target="_blank" rel="noopener" href="${mapsUrl(p)}">Localiser</a></div>
+  ${cu?'<button class="btn del" id="dl">Supprimer cette pharmacie</button>':""}`;
+  $("ov").classList.add("on");
+  $("cl").onclick=close;
+  if($("dl"))$("dl").onclick=()=>{if(confirm("Supprimer cette pharmacie ?")){S.custom=S.custom.filter(x=>x[0]!==id);delete S.rec[id];save();close(true)}};
+}
+function close(){
+  if(cur>=1000){const p=S.custom.find(x=>x[0]===cur);if(p&&!p[2].trim()){S.custom=S.custom.filter(x=>x!==p);save()}}
+  $("ov").classList.remove("on");cur=null;refresh();
+}
+const onEdit=e=>{
+  const t=e.target,id=cur;if(id==null)return;
+  if(t.dataset.m){const p=S.custom.find(x=>x[0]===id);p[+t.dataset.m]=t.dataset.m==="1"?+t.value:t.value;save();return}
+  const f=t.dataset.f;if(!f)return;
+  const r=S.rec[id]=S.rec[id]||{s:0};
+  if(f==="s"){r.s=+t.value;if(r.s>0&&!r.da){r.da=new Date().toISOString().slice(0,10);const d=$("sh").querySelector('[data-f="da"]');if(d)d.value=r.da}}
+  else r[f]=t.value;
+  $("tt").textContent=fmt(amt(r))+" FCFA";save();drawList();
+};
+$("sh").addEventListener("input",onEdit);$("sh").addEventListener("change",onEdit);
+$("ov").addEventListener("click",e=>{if(e.target.id==="ov")close()});
+$("list").addEventListener("click",e=>{
+  if(e.target.closest("a"))return;
+  const c=e.target.closest(".card");if(c)sheet(+c.dataset.id);
+});
+$("chips").addEventListener("click",e=>{const b=e.target.closest(".chip");if(!b)return;F.s=+b.dataset.s;drawChips();drawList()});
+$("q").addEventListener("input",e=>{F.q=e.target.value;drawList()});
+$("zf").addEventListener("change",e=>{F.z=+e.target.value;drawList()});
+$("add").onclick=()=>{const id=1000+(S.custom.reduce((m,p)=>Math.max(m,p[0]-1000),0)+1);S.custom.push([id,0,"","","",null,null]);sheet(id)};
+function refresh(){drawList();drawSum()}
+const sync=()=>{if(cur!=null)return;try{const x=JSON.parse(localStorage.getItem("norata_v1")||"null");if(x){S.rec=x.rec||{};S.custom=x.custom||[]}}catch(e){}refresh()};
+document.addEventListener("visibilitychange",()=>{if(!document.hidden)sync()});window.addEventListener("pageshow",sync);
+document.querySelectorAll("nav button").forEach(b=>b.onclick=()=>{
+  view=b.dataset.v;
+  document.querySelectorAll(".view").forEach(v=>v.hidden=v.id!=="v-"+view);
+  document.querySelectorAll("nav button").forEach(x=>x.removeAttribute("aria-current"));
+  b.setAttribute("aria-current","page");
+  $("tools").hidden=view!=="list";$("add").hidden=view!=="list";
+  if(view==="sum")drawSum();window.scrollTo(0,0);
+});
+function drawGuide(){
+  const b=i=>`<span class="badge" style="--sc:var(--s${i})">${ST[i]}</span>`;
+  $("v-help").insertAdjacentHTML("afterbegin",`<p class="gh">Guide d’utilisation : touchez une rubrique pour la déplier.</p>
+  <details open><summary>1. Installer l’application sur le téléphone</summary><ol>
+  <li><b>iPhone</b> : ouvrez le lien dans Safari, touchez le bouton Partager, puis « Sur l’écran d’accueil ».</li>
+  <li><b>Android</b> : ouvrez le lien dans Chrome, touchez le menu ⋮, puis « Ajouter à l’écran d’accueil ».</li>
+  <li>Utilisez toujours le même navigateur : vos saisies sont enregistrées dedans.</li></ol></details>
+  <details><summary>2. Trouver une pharmacie</summary><ul>
+  <li>Onglet <b>Pharmacies</b> : tapez un nom, un quartier ou un bout de numéro dans la barre de recherche.</li>
+  <li>Le menu « Toutes les zones » limite la liste à un quartier (Plateau, Almadies, Rufisque…).</li>
+  <li>Les boutons de statut sous la recherche (Tous, À appeler, Intéressé…) filtrent selon l’avancement. Faites-les défiler vers la droite pour voir les autres.</li>
+  <li>Le compteur au-dessus de la liste indique combien de pharmacies correspondent.</li></ul></details>
+  <details><summary>3. Passer un appel et l’enregistrer</summary><ol>
+  <li>Sur la carte de la pharmacie, touchez <b>Appeler</b> : le téléphone compose le numéro.</li>
+  <li>Après l’appel, touchez la carte (ou <b>Fiche</b>) pour ouvrir la fiche.</li>
+  <li>Choisissez le <b>statut</b>. La date d’appel se remplit toute seule avec celle du jour.</li>
+  <li>Notez le <b>nom du pharmacien</b> (champ Contact) et, si besoin, une remarque dans <b>Notes</b> : motif du refus, jour de rappel convenu…</li>
+  <li>Fermez la fiche avec ✕ ou en touchant à côté : tout est enregistré automatiquement.</li></ol></details>
+  <details><summary>4. Que signifie chaque statut ?</summary><ul>
+  <li>${b(0)} aucun contact pour l’instant.</li>
+  <li>${b(1)} le téléphone a sonné sans réponse ou la ligne était occupée.</li>
+  <li>${b(2)} le pharmacien a demandé de rappeler plus tard : notez le jour dans Notes.</li>
+  <li>${b(3)} il veut en savoir plus mais n’a pas fixé de rendez-vous.</li>
+  <li>${b(4)} une visite est prévue : renseignez la date de visite.</li>
+  <li>${b(5)} la commande est confirmée : saisissez quantité et prix.</li>
+  <li>${b(6)} la pharmacie ne souhaite pas le produit : notez la raison.</li></ul></details>
+  <details><summary>5. Enregistrer une commande</summary><ol>
+  <li>Ouvrez la fiche, choisissez le statut « Commande passée ».</li>
+  <li>Saisissez la <b>quantité</b> et le <b>prix unitaire</b> en FCFA.</li>
+  <li>Le montant se calcule seul. Exemple : 24 × 6 250 = 150 000 FCFA.</li>
+  <li>Le montant apparaît ensuite sur la carte et dans le Résumé.</li></ol></details>
+  <details><summary>6. Préparer ses visites</summary><ul>
+  <li><b>Localiser</b> ouvre la position exacte de la pharmacie dans Google Maps, avec l’itinéraire.</li>
+  <li>Filtrez par zone et par statut « Rendez-vous pris » pour regrouper les visites d’un même quartier.</li>
+  <li>Vérifiez les horaires affichés avant de partir : ils datent du 02/10/2026.</li></ul></details>
+  <details><summary>7. Lire le Résumé</summary><ul>
+  <li><b>Montant total</b> : somme de toutes les commandes saisies.</li>
+  <li><b>Déjà contactées</b> : part des pharmacies qui ne sont plus « À appeler ».</li>
+  <li><b>Commandes / contactées</b> : combien de pharmacies contactées ont commandé.</li>
+  <li>Le graphique par statut et le tableau par zone montrent où concentrer vos efforts.</li>
+  <li><b>Copier le récapitulatif</b> prépare un texte à coller dans un message WhatsApp ou un mail.</li></ul></details>
+  <details><summary>8. Utiliser le script d’appel</summary><ul>
+  <li>L’onglet <b>Script</b> décrit chaque étape de l’appel, de l’accroche à la prise de commande.</li>
+  <li>Les passages <mark>[entre crochets]</mark> sont à remplacer par le nom du produit, ses avantages, etc.</li>
+  <li>Gardez-le ouvert pendant l’appel, puis revenez dans Pharmacies pour saisir le résultat.</li></ul></details>
+  <details><summary>9. Ajouter ou supprimer une pharmacie</summary><ul>
+  <li>Touchez le bouton <b>+</b> (en bas à droite de la liste), puis saisissez le nom, la zone et le téléphone.</li>
+  <li>Une pharmacie ajoutée sans nom n’est pas conservée.</li>
+  <li>Pour en supprimer une, ouvrez sa fiche et touchez « Supprimer cette pharmacie ». Seules les pharmacies que vous avez ajoutées peuvent être supprimées.</li></ul></details>`);
+}
+drawChips();drawList();drawScript();drawHelp();drawGuide();
+let wt;$("wipe").onclick=e=>{const b=e.currentTarget;
+  if(b.dataset.arm){S={rec:{},custom:[]};save();F.q="";F.s=-1;F.z=-1;$("q").value="";$("zf").value="-1";drawChips();refresh();clearTimeout(wt);b.dataset.arm="";b.textContent="Données effacées ✓";return}
+  b.dataset.arm="1";b.textContent="Touchez encore pour tout effacer définitivement";clearTimeout(wt);
+  wt=setTimeout(()=>{b.dataset.arm="";b.textContent="Effacer toutes les données"},5000)};
+</script>
+</body>
+</html>
